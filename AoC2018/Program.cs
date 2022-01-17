@@ -13,19 +13,26 @@ namespace AoC2018
 
             Console.WriteLine("Hello AoC!");
 
-            // string testFreqInput = "+1, -2, +3, +1";
-
-            using (StreamReader reader = new StreamReader("C:/Users/lewis.chapman-barker/source/repos/AoC2018/inputs/day 1.txt"))
+            List<int> input = new List<int>();
+            string line;
+            // Opens file with stream reader
+            using (var sr = new StreamReader("C:/Users/lewis.chapman-barker/source/repos/AoC2018/inputs/day 1.txt"))
             {
-                //int part1Result = Part1(reader);
-                //Console.WriteLine($"Part 1 result is {part1Result}");
-
-                int part2Result = Part2(reader);
-                Console.WriteLine($"Part 2 result is {part2Result}");
+                // continues reading lines in text file until the read line would be null ie nothing to read
+                while ((line = sr.ReadLine()) != null)
+                {
+                    input.Add(Int32.Parse(line));
+                }
             }
+
+            int part1Result = Part1(input);
+            int part2Result = Part2(input);
+
+            Console.WriteLine($"Part 1 result is {part1Result}");
+            Console.WriteLine($"Part 2 result is {part2Result}");
         }
 
-        public static int Part1(StreamReader reader)
+        public static int Part1(List<int> input)
         {
             // declare starting frequency
             int frequency = 0;
@@ -34,12 +41,9 @@ namespace AoC2018
             string line;
 
             // loop through given date
-            while ((line = reader.ReadLine()) != null)
+            foreach(int val in input)
             {
-
-                // parse and add each line to frequency
-                // Console.WriteLine(line);
-                frequency += Int32.Parse(line);
+                frequency += val;
             }
 
             // write frequency to console
@@ -49,9 +53,47 @@ namespace AoC2018
             return frequency;
         }
 
-        public static int Part2(StreamReader reader)
+        public static int Part2(List<int> input)
         {
-            return 0;
+            try
+            {
+                // declare starting frequency
+                int frequencyTotal = 0;
+
+                // initalise list 
+                List<int> pastFreq = new List<int>();
+
+                // declare a breakout point
+                int iterations = 2000;
+
+                // open loop to go over changes multiple times
+                while (iterations != 0)
+                {
+                    iterations--;
+
+                    foreach (int val in input)
+                    {
+                        // parses the line and adds to total
+                        frequencyTotal += val;
+
+                        if (pastFreq.Contains(frequencyTotal))
+                        {
+                            return frequencyTotal;
+                        }
+                        else
+                        {
+                            pastFreq.Add(frequencyTotal);
+                        }
+                    }
+                }
+                return -1;
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("File could not be read:");
+                Console.WriteLine(e.Message);
+                return -1;
+            }
         }
     }
 }
