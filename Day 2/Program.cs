@@ -13,7 +13,7 @@ namespace Day_2
 
             // creates input list
             List<string> input = new List<string>();
-            List<string> testInput = new List<string>();
+            //List<string> testInput = new List<string>();
 
             // creates line variable for streamreader
             string line;
@@ -29,18 +29,18 @@ namespace Day_2
                 }
             }
 
-            using (var sr = new StreamReader("C:/Users/lewis.chapman-barker/source/repos/AoC2018/inputs/day 2 test input 2.txt"))
-            {
-                // continues reading lines in text file until the read line would be null ie nothing to read
-                while ((line = sr.ReadLine()) != null)
-                {
-                    // adds the line to input list
-                    testInput.Add(line);
-                }
-            }
+            //using (var sr = new StreamReader("C:/Users/lewis.chapman-barker/source/repos/AoC2018/inputs/day 2 test input 2.txt"))
+            //{
+            //    // continues reading lines in text file until the read line would be null ie nothing to read
+            //    while ((line = sr.ReadLine()) != null)
+            //    {
+            //        // adds the line to input list
+            //        testInput.Add(line);
+            //    }
+            //}
 
             int part1Result = Part1(input);
-            string part2Result = Part2(testInput);
+            string part2Result = Part2(input);
 
             Console.Write($"Part 1 result is {part1Result}\n");
             Console.Write($"Part 2 result is {part2Result}");
@@ -52,7 +52,7 @@ namespace Day_2
             int checkTwiceRep = 0;
             int checkThriceRep = 0;
 
-            foreach(var boxID in input)
+            foreach (var boxID in input)
             {
                 //Console.WriteLine(boxID);
 
@@ -94,8 +94,54 @@ namespace Day_2
         {
 
             // init string for result
-            string commonLetters = "not yet calculated";
+            string commonLetters = "";
 
+            // loop through list of strings
+            foreach (var boxID in input)
+            {
+                //Console.WriteLine(boxID);
+
+                // loop through list of strings again
+                foreach (var compareID in input)
+                {
+                    //Console.WriteLine(compareID);
+
+                    // init count of no matches
+                    int noMatchCount = 0;
+
+                    // loop through characters in first ID, comparing with same index in second ID
+                    for (int i = 0; i < boxID.Length; i++)
+                    {
+
+                        if (boxID[i] != compareID[i])
+                        {
+                            // if no match increment count
+                            //Console.WriteLine("No match");
+                            noMatchCount++;
+                        }
+                        else
+                        {
+                            // if a match then add the character the commonLetters string
+                            //Console.WriteLine("Match");
+                            commonLetters += boxID[i];
+                        }
+                    }
+
+                    // if matching count is one, save the matching strings (just writes to console for now)
+                    if (noMatchCount == 1 && boxID != compareID)
+                    {
+                        //Console.WriteLine("Found it");
+                        return commonLetters;
+                    }
+                    else
+                    {
+                        //Console.WriteLine("Not here");
+                        commonLetters = "";
+                    }
+                }
+            }
+
+            commonLetters = "not found";
             return commonLetters;
         }
     }
